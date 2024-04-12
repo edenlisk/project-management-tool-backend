@@ -1,17 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import User, {UserSchema} from '../models/usersModel';
+import User, {IUserModel} from '../models/usersModel';
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
 import jwt from "jsonwebtoken";
-import { userSchema } from "../models/usersModel";
-import {HydratedDocument} from "mongoose";
 
 
 const signToken = (id: string) => {
     return jwt.sign({id}, process.env.JWT_SECRET_KEY as string, {expiresIn: process.env.EXPIRES_IN});
 }
 
-const createSendToken = (user: any, statusCode: number, res: Response<any, Record<string, any>>) => {
+const createSendToken = (user: IUserModel, statusCode: number, res: Response<any, Record<string, any>>) => {
     const token = signToken(user._id);
     const cookieOptions = {
         expires: new Date(Date.now() + 10 + 20 * 60 * 60 * 1000),

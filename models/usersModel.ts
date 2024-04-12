@@ -1,19 +1,19 @@
-import { Schema, InferSchemaType, model } from "mongoose";
+import { Schema, InferSchemaType, model, Document } from "mongoose";
 import isEmail from "validator/lib/isEmail";
-import {NextFunction} from "express";
 import bcrypt from 'bcrypt';
 
 
-export interface UserSchema {
+export interface IUserModel extends Document{
     name: string;
     email: string;
     password: string;
     phoneNumber: String,
+    verifyPassword(password: string): Promise<boolean>,
     // passwordConfirm: string;
-    role?: 'user' | 'admin';
+    role?: 'user' | 'admin' | 'customer';
 }
 
-export const userSchema = new Schema<UserSchema>({
+export const userSchema = new Schema<IUserModel>({
     name: {
         type: String,
         minLength: 5,
@@ -45,15 +45,18 @@ export const userSchema = new Schema<UserSchema>({
 
 // type User = InferSchemaType<typeof userSchema>;
 
-// @ts-ignore
-userSchema.pre("save", async function (next: NextFunction) {
+userSchema.pre("save", async function (next) {
     if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 12);
     next();
 })
 
+// userSchema.method('verifyPassword', async function (candidatePassword: string) {
+//     return await bcrypt.compare(candidatePassword, this.password);
+// })
+
 userSchema.methods.verifyPassword = async function (candidatePassword: string) {
     return await bcrypt.compare(candidatePassword, this.password);
 }
 
-export default model<UserSchema>('User', userSchema);
+export default model('User', userSchema);
