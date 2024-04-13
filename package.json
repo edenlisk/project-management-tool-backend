@@ -4,10 +4,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node --transpile-only src/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "edenlisk/josue",
   "license": "ISC",
   "description": "",
   "devDependencies": {
@@ -31,6 +31,7 @@
     "express": "^4.19.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.2.0",
+    "express-validator": "^7.0.1",
     "helmet": "^7.0.0",
     "hpp": "^0.2.3",
     "http-errors": "~1.6.3",
