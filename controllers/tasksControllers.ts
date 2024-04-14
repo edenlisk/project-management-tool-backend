@@ -29,6 +29,7 @@ export const createTask = catchAsync(async (req: Request, res: Response, next: N
             projectId: req.body.projectId,
             assignees: req.body.assignees,
             currentStatus: 'todo',
+            priorityLevel: req.body.priorityLevel
         }
     )
     res
@@ -58,6 +59,7 @@ export const updateTask = catchAsync(async (req: Request, res: Response, next: N
     if (req.body.startTime) task.startTime = req.body.startTime;
     if (req.body.endTime) task.endTime = req.body.endTime;
     if (req.body.currentStatus) task.currentStatus = req.body.currentStatus;
+    if (req.body.priorityLevel) task.priorityLevel = req.body.priorityLevel;
     await task.save({validateModifiedOnly: true});
     res.status(201).json({status: "Success"});
 })

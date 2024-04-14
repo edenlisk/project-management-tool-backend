@@ -1,11 +1,11 @@
 import mongoose, {Schema, Document, Types, model} from "mongoose";
-import {NextFunction} from "express";
 
 
 interface ITaskModel extends Document {
     title: string,
     assignees: [],
     currentStatus: string,
+    priorityLevel: string,
     startTime: Date,
     endTime: Date,
     projectId: Types.ObjectId,
@@ -24,6 +24,11 @@ const taskSchema = new Schema<ITaskModel>({
         type: String,
         enum: ['todo', 'in progress', 'under review', 'completed'],
         default: () => 'todo'
+    },
+    priorityLevel: {
+        type: String,
+        enum: ['normal', 'important', 'urgent', 'critical'],
+        default: () => 'normal'
     },
     startTime: Date,
     endTime: Date,

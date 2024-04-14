@@ -24,7 +24,7 @@ app.use(mongoSanitize());
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
-const corsOptions ={
+const corsOptions = {
     origin:'*',
     credentials: true,
     optionSuccessStatus:200,
