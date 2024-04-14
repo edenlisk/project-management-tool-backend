@@ -8,6 +8,8 @@ import rateLimit from "express-rate-limit";
 import hpp from "hpp";
 import cookieParser from "cookie-parser";
 import projectsRouter from "../routes/projectsRouter";
+import taskRouter from "../routes/taskRouter";
+import usersRouter from "../routes/usersRouter";
 
 config()
 
@@ -43,6 +45,8 @@ app.set('port', PORT);
 
 
 app.use('/api/v1/projects', projectsRouter);
+app.use('/api/v1/tasks', taskRouter);
+app.use('/api/v1/users', usersRouter);
 
 
 app.listen(PORT, () => {
