@@ -8,26 +8,12 @@ export interface IDiscussionModel {
 const discussionSchema = new Schema<IDiscussionModel>({
     members: {
         type: [mongoose.Schema.Types.ObjectId],
-        required: true,
-        validate: [
-            {
-                validator: function(arr: Types.ObjectId[]) {
-                    return arr.length === 2;
-                },
-                message: 'Members array must contain exactly two user IDs.'
-            },
-            {
-                validator: function(arr: Types.ObjectId[]) {
-                    arr.sort();
-                    return arr[0] !== arr[1];
-                },
-                message: 'Members array must contain distinct user IDs.'
-            }
-        ]
+        required: true
     },
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        unique: true
     }
 }, {
     timestamps: true,

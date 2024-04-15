@@ -1,7 +1,6 @@
 import mongoose, {Schema, Types, model} from "mongoose";
 
 
-
 export interface ICommentsModel {
     userId: Types.ObjectId,
     taskId: Types.ObjectId,
