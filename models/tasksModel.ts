@@ -6,6 +6,7 @@ interface ITaskModel extends Document {
     assignees: [],
     currentStatus: string,
     priorityLevel: string,
+    dependencies: [Types.ObjectId]
     startTime: Date,
     endTime: Date,
     projectId: Types.ObjectId,
@@ -29,6 +30,15 @@ const taskSchema = new Schema<ITaskModel>({
         type: String,
         enum: ['normal', 'important', 'urgent', 'critical'],
         default: () => 'normal'
+    },
+    dependencies: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Task"
+            }
+        ],
+        default: []
     },
     startTime: Date,
     endTime: Date,

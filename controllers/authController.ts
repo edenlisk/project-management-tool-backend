@@ -9,6 +9,7 @@ const signToken = (id: string) => {
     return jwt.sign({id}, process.env.JWT_SECRET_KEY as string, {expiresIn: process.env.EXPIRES_IN});
 }
 
+
 const createSendToken = (user: IUserModel, statusCode: number, res: Response<any, Record<string, any>>) => {
     const token = signToken(user._id);
     const cookieOptions = {
