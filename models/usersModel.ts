@@ -10,7 +10,7 @@ export interface IUserModel extends Document{
     phoneNumber: String,
     verifyPassword(password: string): Promise<boolean>,
     // passwordConfirm: string;
-    role?: 'user' | 'admin' | 'customer';
+    role?: 'admin' | 'customer';
 }
 
 export const userSchema = new Schema<IUserModel>({
@@ -38,8 +38,8 @@ export const userSchema = new Schema<IUserModel>({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
+        enum: ['customer', 'admin'],
+        default: 'customer'
     }
 })
 

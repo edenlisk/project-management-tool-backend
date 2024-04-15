@@ -2,7 +2,7 @@ import {Router} from "express";
 import {
     createProject,
     deleteProject,
-    getAllProjects,
+    getCustomerProjects,
     getOneProject,
     updateProject
 } from "../controllers/projectsControllers";
@@ -10,8 +10,8 @@ import {body, param} from "express-validator";
 
 const router: Router = Router();
 
-router.route('/')
-    .get(getAllProjects)
+router.route('/:customerId')
+    .get(getCustomerProjects)
     .post(createProject)
 
 router.route('/:projectId')

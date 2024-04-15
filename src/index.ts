@@ -2,9 +2,10 @@ import express, {Request} from "express";
 import {config} from "dotenv";
 import path from "path";
 import mongoSanitize from "express-mongo-sanitize";
+import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import hpp from "hpp";
 import cookieParser from "cookie-parser";
 import projectsRouter from "../routes/projectsRouter";
@@ -30,17 +31,17 @@ const corsOptions = {
     optionSuccessStatus:200,
 }
 app.use(cors<Request>(corsOptions));
-const limiter = rateLimit(
-    {
-        max: 5000,
-        windowMs: 60 * 60 * 1000,
-        message: "Too many requests from this IP, please try again in an hour"
-    }
-)
+// const limiter = rateLimit(
+//     {
+//         max: 5000,
+//         windowMs: 60 * 60 * 1000,
+//         message: "Too many requests from this IP, please try again in an hour"
+//     }
+// )
 app.use(cookieParser());
 app.use(hpp());
 app.use(helmet());
-app.use('/api', limiter);
+// app.use('/api', limiter);
 app.set('port', PORT);
 
 
@@ -48,6 +49,10 @@ app.use('/api/v1/projects', projectsRouter);
 app.use('/api/v1/tasks', taskRouter);
 app.use('/api/v1/users', usersRouter);
 
+
+mongoose.connect(process.env.MONGO_URL_DEV as string, {dbName: "project-management-tool"})
+    .then(() => console.log("Database connection is successful"))
+    .catch((err: Error) => console.log(err.message));
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`)

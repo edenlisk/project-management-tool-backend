@@ -5,7 +5,7 @@ import AppError from "../utils/appError";
 import TasksModel from "../models/tasksModel";
 
 
-export const getAllProjects = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const getCustomerProjects = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     res
         .status(200)
         .json(
