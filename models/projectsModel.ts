@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Types, model } from "mongoose";
+import TasksModel, {ITaskModel} from "./tasksModel";
 
 
 
@@ -38,4 +39,9 @@ const projectSchema = new Schema<IProjectModel>({
     toObject: { virtuals: true }
 })
 
+
+projectSchema.pre('deleteOne', async function (this: ITaskModel, next) {
+    await TasksModel.deleteMany({projectId: this._id});
+    next();
+})
 export default model('Project', projectSchema);

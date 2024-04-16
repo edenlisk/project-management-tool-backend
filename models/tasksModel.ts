@@ -1,7 +1,7 @@
 import mongoose, {Schema, Document, Types, model} from "mongoose";
 
 
-interface ITaskModel extends Document {
+export interface ITaskModel extends Document {
     title: string,
     assignees: [],
     currentStatus: string,

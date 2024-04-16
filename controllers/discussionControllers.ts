@@ -33,3 +33,4 @@ export const addMembers = catchAsync(async (req: Request, res: Response, next: N
     const projectDiscussion = await DiscussionModel.find({projectId: req.params.projectId});
     if (!isProjectIdValid || !projectDiscussion) return next(new AppError("Unable to complete the operation, Try again!", 400));
 })
+
