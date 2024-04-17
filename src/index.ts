@@ -1,10 +1,11 @@
-import express, {Request} from "express";
+import express, {Request, Response} from "express";
 import {config} from "dotenv";
 import path from "path";
 import mongoSanitize from "express-mongo-sanitize";
 import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
+import logger from "morgan"
 // import rateLimit from "express-rate-limit";
 import hpp from "hpp";
 import cookieParser from "cookie-parser";
@@ -44,7 +45,10 @@ app.use(helmet());
 // app.use('/api', limiter);
 app.set('port', PORT);
 
-
+// app.use('/', (req: Request, res: Response) => {
+//     res.send('lmao');
+// })
+app.use(logger('dev'));
 app.use('/api/v1/projects', projectsRouter);
 app.use('/api/v1/tasks', taskRouter);
 app.use('/api/v1/users', usersRouter);
