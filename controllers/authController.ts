@@ -19,6 +19,7 @@ const createSendToken = (user: IUserModel, statusCode: number, res: Response<any
     }
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
     res.cookie('jwt', token, cookieOptions);
+    user.password = '';
     res
         .status(statusCode)
         .json(
@@ -55,16 +56,18 @@ export const signup = catchAsync(async (req: Request, res: Response, next: NextF
         {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            phoneNumber: req.body.phoneNumber,
+            role: req.body.role
         }
     )
     res
-        .status(2002)
+        .status(202)
         .json(
             {
                 status: "Success",
                 data: {
-                    newUser
+                    newUser: {...newUser, password: undefined}
                 }
             }
         )
