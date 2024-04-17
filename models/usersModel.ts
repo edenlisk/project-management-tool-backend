@@ -9,7 +9,7 @@ export interface IUserModel extends Document{
     password: string;
     phoneNumber: String,
     verifyPassword(password: string): Promise<boolean>,
-    // passwordConfirm: string;
+    passwordConfirm: string,
     role?: 'admin' | 'project manager' | 'team member';
 }
 
@@ -23,7 +23,8 @@ export const userSchema = new Schema<IUserModel>({
     email: {
         type: String,
         minLength: 5,
-        maxLength: 20,
+        maxLength: 50,
+        unique: true,
         required: [true, 'Please provide email address'],
         validate: [isEmail, "Please provide valid Email address"]
     },
@@ -32,15 +33,26 @@ export const userSchema = new Schema<IUserModel>({
         minLength: 8,
         select: false
     },
+    passwordConfirm: {
+        type: String,
+        validate: {
+            validator: function (this: IUserModel, value: string): boolean {
+                return this.password === value;
+            },
+            message: "Passwords does not match"
+        }
+    },
     phoneNumber: {
         type: String,
         unique: true
     },
     role: {
         type: String,
-        enum: ['customer', 'admin'],
-        default: 'customer'
+        enum: ['project manager', 'admin', 'team member'],
+        default: 'project manager'
     }
+}, {
+    timestamps: true
 })
 
 // type User = InferSchemaType<typeof userSchema>;
