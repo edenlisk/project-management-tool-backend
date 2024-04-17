@@ -58,4 +58,11 @@ taskSchema.pre('save', async function (next) {
     next();
 });
 
+// TODO 1: HANDLE DELETE COMMENTS ASSOCIATED WITH DELETE TASK
+taskSchema.pre('deleteMany' , async function (this: ITaskModel, next) {
+    console.log("Pre delete many of tasks");
+    console.log(this);
+    next();
+})
+
 export default model('Task', taskSchema);
