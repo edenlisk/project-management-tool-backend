@@ -3,19 +3,21 @@ import catchAsync from "../utils/catchAsync";
 import ProjectsModel from "../models/projectsModel";
 import AppError from "../utils/appError";
 import TasksModel from "../models/tasksModel";
+import {isValidObjectId} from "mongoose";
 
 
 export const getCustomerProjects = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const isCustomerIdValid = isValidObjectId(req.params.customerId);
+    if (!isCustomerIdValid) return next(new AppError("Cannot find projects for selected customer's projects", 401));
+    const projects = await ProjectsModel.find({customerId: req.params.customerId})
+        .populate('teamMembers');
     res
         .status(200)
         .json(
             {
                 status: "Success",
                 data: {
-                    projects: [
-                        {_id: 1, name: "Developing E-commerce website"},
-                        {_id: 2, name: "Learning Data Structures"}
-                    ]
+                    projects
                 }
             }
         )
@@ -43,9 +45,11 @@ export const createProject = catchAsync(async (req: Request, res: Response): Pro
     const project = await ProjectsModel.create(
         {
             name: req.body.name,
-            users: req.body.users,
+            teamMembers: req.body.teamMembers,
             customerId: req.body.customerId,
-            tasks: req.body.tasks
+            status: req.body.status,
+            startDate: req.body.startDate,
+            dueDate: req.body.dueDate
         }
     )
     res
@@ -62,12 +66,17 @@ export const createProject = catchAsync(async (req: Request, res: Response): Pro
 })
 
 export const updateProject = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const project = await ProjectsModel.findById(req.body.projectId);
-    if (!project) return next(new AppError("Selected project was not found!", 401));
+    const isProjectIdValid = isValidObjectId(req.params.projectId);
+    const project = await ProjectsModel.findById(req.params.projectId);
+    if (!isProjectIdValid || !project) return next(new AppError("Selected project was not found!", 400));
     if (req.body.name) project.name = req.body.name;
+    // if (req.body.tasks) project.tasks = req.body.tasks;
+    if (req.body.teamMembers) project.teamMembers = req.body.teamMembers;
+    if (req.body.status) project.status = req.body.status;
+    if (req.body.dueDate) project.dueDate = req.body.dueDate;
     await project.save({validateModifiedOnly: true});
     res
-        .status(201)
+        .status(202)
         .json(
             {
                 status: "Success"
@@ -76,7 +85,7 @@ export const updateProject = catchAsync(async (req: Request, res: Response, next
     ;
 })
 
-export const deleteProject = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const deleteProject = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> =>   {
     const project = await ProjectsModel.findByIdAndDelete(req.params.projectId);
     if (!project) return next(new AppError("Something went wrong", 400));
     res
