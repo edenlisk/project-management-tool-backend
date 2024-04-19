@@ -1,36 +1,21 @@
-import mongoose, { Schema, Types, model } from "mongoose";
+import mongoose, { Schema, Types, model, Document } from "mongoose";
 
 
-export interface IChatModel {
-    members: Types.Array<Types.ObjectId>
+export interface IChatModel extends Document {
+    senderId: Types.ObjectId,
+    receiverId: Types.ObjectId
 }
 
 
 const chatSchema = new Schema<IChatModel>(
     {
-        members: {
-            type: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User"
-                }
-            ],
-            unique: true,
-            validate: [
-                {
-                    validator: function (arr: Types.ObjectId[]) {
-                        return arr.length === 2;
-                    },
-                    message: "Members of chat cannot exceed two"
-                },
-                {
-                    validator: function (arr: Types.ObjectId[]) {
-                        arr.sort();
-                        return !arr[0].equals(arr[1]);
-                    },
-                    message: "You cannot create chat with yourself"
-                }
-            ]
+        senderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        receiverId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     }, {
         timestamps: true

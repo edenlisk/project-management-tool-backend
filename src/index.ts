@@ -13,6 +13,7 @@ import projectsRouter from "../routes/projectsRouter";
 import taskRouter from "../routes/taskRouter";
 import usersRouter from "../routes/usersRouter";
 import messagesRouter from "../routes/messageRouter";
+import chatRouter from "../routes/chatRouter";
 
 config()
 
@@ -54,6 +55,7 @@ app.use('/api/v1/projects', projectsRouter);
 app.use('/api/v1/tasks', taskRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/messages', messagesRouter);
+app.use('/api/v1/chats', chatRouter);
 
 
 mongoose.connect(process.env.MONGO_URL_DEV as string, {dbName: "project-management-tool"})
