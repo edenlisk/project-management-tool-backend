@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import projectsRouter from "../routes/projectsRouter";
 import taskRouter from "../routes/taskRouter";
 import usersRouter from "../routes/usersRouter";
+import messagesRouter from "../routes/messageRouter";
 
 config()
 
@@ -52,6 +53,7 @@ app.use(logger('dev'));
 app.use('/api/v1/projects', projectsRouter);
 app.use('/api/v1/tasks', taskRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/messages', messagesRouter);
 
 
 mongoose.connect(process.env.MONGO_URL_DEV as string, {dbName: "project-management-tool"})
