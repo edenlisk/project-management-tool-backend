@@ -1,7 +1,7 @@
-import mongoose, {Schema, Types, model} from "mongoose";
+import mongoose, {Schema, Types, model, Document} from "mongoose";
 
-export interface IDiscussionModel {
-    members: [Types.ObjectId],
+export interface IDiscussionModel extends Document{
+    members: Types.ObjectId[],
     projectId: Types.ObjectId
 }
 

@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from "express";
 import DiscussionModel from "../models/DiscussionModel";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
-import {isValidObjectId} from "mongoose";
+import {isValidObjectId, Types,} from "mongoose";
 
 
 export const addProjectDiscussion = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -30,7 +30,21 @@ export const addProjectDiscussion = catchAsync(async (req: Request, res: Respons
 
 export const addMembers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const isProjectIdValid = isValidObjectId(req.params.projectId);
-    const projectDiscussion = await DiscussionModel.find({projectId: req.params.projectId});
+    const projectDiscussion = await DiscussionModel.findOne({projectId: req.params.projectId});
     if (!isProjectIdValid || !projectDiscussion) return next(new AppError("Unable to complete the operation, Try again!", 400));
+    if (req.body.members) {
+        req.body.members.forEach((memberId: Types.ObjectId) => {
+            if (!projectDiscussion.members.includes(memberId)) projectDiscussion.members.push(memberId);
+        })
+    }
+    await projectDiscussion.save({validateModifiedOnly: true});
+    res
+        .status(200)
+        .json(
+            {
+                status: "Success",
+            }
+        )
+    ;
 })
 
