@@ -4,8 +4,8 @@ import mongoose, { Schema, Document, Types, model } from "mongoose";
 
 interface IProjectModel extends Document {
     name: string,
+    templateId: Types.ObjectId,
     teamMembers: Types.ObjectId[],
-    // tasks: Types.ObjectId[],
     customerId: Types.ObjectId,
     status: string,
     startDate: Date,
@@ -30,6 +30,10 @@ const projectSchema = new Schema<IProjectModel>({
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    templateId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Template"
     },
     status: {
         type: String,
