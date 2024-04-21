@@ -27,14 +27,6 @@ const projectSchema = new Schema<IProjectModel>({
             }
         ]
     },
-    // tasks: {
-    //     type: [
-    //         {
-    //             type: mongoose.Types.ObjectId,
-    //             ref: "Task"
-    //         }
-    //     ]
-    // },
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
