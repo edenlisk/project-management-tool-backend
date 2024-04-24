@@ -11,7 +11,6 @@ const signToken = (id: string) => {
     return jwt.sign({id}, process.env.JWT_SECRET_KEY as string, {expiresIn: process.env.EXPIRES_IN});
 }
 
-
 const createSendToken = (user: IUserModel, statusCode: number, res: Response<any, Record<string, any>>) => {
     const token = signToken(user._id);
     const cookieOptions = {
@@ -86,8 +85,7 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
     createSendToken(user, 200, res);
 })
 
-
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+export const forgotPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // 1. Check if user with POSTed email exists
     const currentUser = await User.findOne({email: req.body.email.trim()});
     if (!currentUser) return next(new AppError("There is not user with this email", 404));
@@ -115,7 +113,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     }
 })
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
+export const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // 1. Get user based on token
     const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
     const currentUser = await User.findOne(
@@ -124,7 +122,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
             passwordResetExpires: {$gt: Date.now()}
         }
     )
-    // console.log(hashedToken);
     // 2. If token has not expired, and there is the user then reset the password
     if (!currentUser) return next(new AppError("Invalid Token or has expired", 400));
     if (req.body.password) currentUser.password = req.body.password;
