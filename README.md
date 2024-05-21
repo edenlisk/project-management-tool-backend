@@ -32,6 +32,7 @@
   <summary>Client</summary>
   <ul>
     <li><a href="https://reactjs.org/">Expressjs</a></li>
+    <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
     <li><a href="https://react-bootstrap.github.io/">MongoDB</a></li>
     <li><a href="https://mui.com/material-ui/">Mongoose</a></li>
     <li><a href="https://redux-toolkit.js.org/">Nodejs</a></li>
@@ -43,14 +44,6 @@
 ### Key Features <a name="key-features"></a>
 
 - **Comprehensive Dashboard**
-- **Generate student library history**
-- **Generate class library history**
-- **Automatic fine calculation**
-- **Librarians management**
-- **Work with academic Years**
-- **Batch rentals && single rental**
-- **Notify students about rental due date**
-- **Flexible settings page**
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
